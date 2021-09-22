@@ -90,7 +90,7 @@ DATABASES = {
         'NAME': 'recipe_db',
         'USER': 'dbuser',
         'PASSWORD': 'recipe',
-        'HOST': 'https://guarded-escarpment-61332.herokuapp.com/',
+        'HOST': 'localhost',
     }
 }
 # server path to store files in the computer
