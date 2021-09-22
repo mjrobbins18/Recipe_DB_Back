@@ -53,7 +53,7 @@ class RecipeSerializer(serializers.ModelSerializer):
         many=True,
         read_only=True
     )
-    procedures = ProcedureSerializer(
+    procedure = ProcedureSerializer(
         many=True,
         read_only=True
     )
@@ -70,5 +70,5 @@ class RecipeSerializer(serializers.ModelSerializer):
                   'category',
                   'ingredients',
                   'equipment',
-                  'procedures',
+                  'procedure',
                   )
