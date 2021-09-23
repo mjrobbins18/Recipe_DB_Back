@@ -19,7 +19,8 @@ class RecipeDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = RecipeSerializer
 
 class ObtainTokenPairWithNameView(TokenObtainPairView):
-    # permission_classes = (permissions.AllowAny,)
+    permission_classes = (permissions.AllowAny,)
+    authentication_classes = ()
     serializer_class = MyTokenObtainPairSerializer
 
 class CustomUserCreate(APIView):
@@ -39,28 +40,6 @@ class HelloWorldView(APIView):
 
     def get(self, request):
         return Response(data={"hello":"world"}, status=status.HTTP_200_OK)
-
-# User Views
-
-# class UserViewSet(viewsets.ModelViewSet):
-#     http_method_names = ['get']
-#     serializer_class = UserSerializer
-#     permission_classes = (IsAuthenticated)
-#     filter_backends = [filters.OrderingFilter]
-#     ordering_fields = ['updated']
-#     ordering = ['-updated']
-
-#     def get_queryset(self):
-#         if self.request.user.is_superuser:
-#             return User.objects.all()
-
-#     def get_objects(self):
-#         lookup_field_value = self.kwargs[self.lookup_field]
-
-#         obj = User.objects.get(lookup_field_value)
-#         self.check_object_permissions(self.request, obj)
-
-#         return obj
 
 # # Ingredient Views
 # class IngredientList(generics.ListCreateAPIView):
