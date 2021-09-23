@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from .models import Ingredient, Recipe, Equipment, Procedure
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from .models import Ingredient, Recipe, Equipment, Procedure, User, Favorites
 
 # Ingredient serializer
 class IngredientSerializer(serializers.ModelSerializer):
@@ -43,6 +44,47 @@ class ProcedureSerializer(serializers.ModelSerializer):
                   'step',
                   'recipe',)
 
+
+# Favorite Serializer
+class FavoritesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Favorites
+        fields=('id', 'recipe', 'user')
+
+
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super(MyTokenObtainPairSerializer, cls).get_token(user)
+
+        token['first_name'] = user.first_name
+        return token
+
+# User Serializer
+
+class CustomUserSerializer(serializers.ModelSerializer):
+    """
+    Currently unused in preference of the below.
+    """
+    email = serializers.EmailField(
+        required=True
+    )
+    username = serializers.CharField()
+    password = serializers.CharField(min_length=8, write_only=True)
+
+    class Meta:
+        model = User
+        fields = ('email', 'username', 'password')
+        extra_kwargs = {'password': {'write_only': True}}
+
+    def create(self, validated_data):
+        password = validated_data.pop('password', None)
+        instance = self.Meta.model(**validated_data)  # as long as the fields are the same, we can just use this
+        if password is not None:
+            instance.set_password(password)
+        instance.save()
+        return instance
+
 # Recipe Serializer
 class RecipeSerializer(serializers.ModelSerializer):
     ingredients = IngredientSerializer(
@@ -57,18 +99,37 @@ class RecipeSerializer(serializers.ModelSerializer):
         many=True,
         read_only=True
     )
+    user = CustomUserSerializer(
+        read_only=True
+    )
 
     class Meta:
         model = Recipe
         fields = ('id',
-                  'title',
-                  'author', 
+                  'title', 
                   'image', 
                   'image_url',
                   'dish_components',
-                  'author',
+                  'user',
                   'category',
                   'ingredients',
                   'equipment',
                   'procedure',
                   )
+
+# class UserSerializer(serializers.ModelSerializer):
+#     created = serializers.DateTimeField(read_only=True)
+#     updated = serializers.DateTimeField(read_only=True)
+#     recipe = RecipeSerializer(
+#         many=True,
+#         read_only=True
+#     )
+#     favorites = FavoritesSerializer(
+#         many=True,
+#         read_only=True
+#     )
+
+#     class Meta:
+#         model = User
+#         fields = ['id', 'username', 'email', 'is_active', 'created', 'updated', 'recipe', 'favorites']
+#         read_only_field = ['is_active']
