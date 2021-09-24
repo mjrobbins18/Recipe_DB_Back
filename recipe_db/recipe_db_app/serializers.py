@@ -4,10 +4,6 @@ from .models import Ingredient, Recipe, Equipment, Procedure, User, Favorites
 
 # Ingredient serializer
 class IngredientSerializer(serializers.ModelSerializer):
-    recipe = serializers.HyperlinkedRelatedField(
-        view_name='recipe_detail',
-        read_only=True,
-    )
 
     class Meta:
         model = Ingredient
@@ -19,10 +15,6 @@ class IngredientSerializer(serializers.ModelSerializer):
 
 # Equipment Serializer
 class EquipmentSerializer(serializers.ModelSerializer):
-    recipe = serializers.HyperlinkedRelatedField(
-        view_name='recipe_detail',
-        read_only=True,
-    )
 
     class Meta:
         model = Equipment
@@ -33,10 +25,6 @@ class EquipmentSerializer(serializers.ModelSerializer):
 
 # Procedure Serializer
 class ProcedureSerializer(serializers.ModelSerializer):
-    recipe = serializers.HyperlinkedRelatedField(
-        view_name='recipe_detail',
-        read_only=True,
-    )
 
     class Meta:
         model = Procedure
