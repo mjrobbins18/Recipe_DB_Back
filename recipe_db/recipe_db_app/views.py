@@ -7,7 +7,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 # from rest_framework.permissions import IsAuthenticated
 # from rest_framework.filters import OrderingFilter
-from .serializers import RecipeSerializer, MyTokenObtainPairSerializer, CustomUserSerializer, RecipeCreateSerializer
+from .serializers import RecipeSerializer, MyTokenObtainPairSerializer, CustomUserSerializer, RecipeCreateSerializer, User
 from .models import Recipe
 
 # Recipe Views
@@ -72,6 +72,19 @@ class LogoutAndBlacklistRefreshTokenForUserView(APIView):
         except Exception as e:
             return Response(status=status.HTTP_400_BAD_REQUEST)
         
+# user views
+
+class UserList(generics.ListCreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = CustomUserSerializer
+    permission_classes = (permissions.AllowAny,)
+    authentication_classes = ()
+
+class UserDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = User.objects.all()
+    serializer_class = CustomUserSerializer
+    lookup_field = 'username'
+
 class HelloWorldView(APIView):
     permission_classes = (permissions.AllowAny,)
 
