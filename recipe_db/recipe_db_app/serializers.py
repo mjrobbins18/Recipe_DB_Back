@@ -67,7 +67,7 @@ class CustomUserSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         password = validated_data.pop('password', None)
-        instance = self.Meta.model(**validated_data)  # as long as the fields are the same, we can just use this
+        instance = self.Meta.model(**validated_data)
         if password is not None:
             instance.set_password(password)
         instance.save()
@@ -89,6 +89,33 @@ class RecipeSerializer(serializers.ModelSerializer):
     )
     user = CustomUserSerializer(
         read_only=True
+    )
+
+    class Meta:
+        model = Recipe
+        fields = ('id',
+                  'title', 
+                  'image', 
+                  'image_url',
+                  'dish_components',
+                  'user',
+                  'category',
+                  'ingredients',
+                  'equipment',
+                  'procedure',
+                  )
+class RecipeCreateSerializer(serializers.ModelSerializer):
+    ingredients = IngredientSerializer(
+        many=True,
+        write_only=True
+    )
+    equipment = EquipmentSerializer(
+        many=True,
+        write_only=True
+    )
+    procedure = ProcedureSerializer(
+        many=True,
+        write_only=True
     )
 
     class Meta:

@@ -7,7 +7,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 # from rest_framework.permissions import IsAuthenticated
 # from rest_framework.filters import OrderingFilter
-from .serializers import RecipeSerializer, MyTokenObtainPairSerializer, CustomUserSerializer
+from .serializers import RecipeSerializer, MyTokenObtainPairSerializer, CustomUserSerializer, RecipeCreateSerializer
 from .models import Recipe
 
 # Recipe Views
@@ -29,14 +29,15 @@ class RecipeList(generics.ListCreateAPIView):
             form.instance.created_by = self.request.user
             return super(Recipe, self).form_valid(form)
 
-class RecipeList(generics.ListCreateAPIView):
+class RecipeCreate(generics.ListCreateAPIView):
     queryset = Recipe.objects.all()
-    serializer_class = RecipeSerializer
+    serializer_class = RecipeCreateSerializer
     permission_classes = (permissions.AllowAny,)
     authentication_classes = ()
-    def perform_create(self, serializer):
-        print(self.request.user)
-        serializer.save(user_id = self.request.user)
+
+    # def perform_create(self, serializer):
+    #     print(self.request.user)
+    #     serializer.save(user_id = self.request.user)
 
 class ObtainTokenPairWithNameView(TokenObtainPairView):
     permission_classes = (permissions.AllowAny,)
@@ -77,6 +78,8 @@ class HelloWorldView(APIView):
     def get(self, request):
         return Response(data={"hello":"world"}, status=status.HTTP_200_OK)
 
+# view user by id
+ 
 
 # # Ingredient Views
 # class IngredientList(generics.ListCreateAPIView):
