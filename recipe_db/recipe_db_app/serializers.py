@@ -84,6 +84,18 @@ class CustomUserSerializer(serializers.ModelSerializer):
         obj = get_object_or_404(queryset, **filter)  # Lookup the object
         self.check_object_permissions(self.request, obj)
         return obj
+class RecipeCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Recipe
+        fields = ('id',
+                  'title', 
+                  'image', 
+                  'image_url',
+                  'dish_components',
+                  'user',
+                  'category',
+                  'recipe_yield',
+                  )
 
 # Recipe Serializer
 class RecipeSerializer(serializers.ModelSerializer):
@@ -115,35 +127,6 @@ class RecipeSerializer(serializers.ModelSerializer):
                   'ingredients',
                   'equipment',
                   'procedure',
-                  )
-class RecipeCreateSerializer(serializers.ModelSerializer):
-    # ingredients = IngredientSerializer(
-    #     many=True,
-    #     write_only=True
-    # )
-    # equipment = EquipmentSerializer(
-    #     many=True,
-    #     write_only=True
-    # )
-    # procedure = ProcedureSerializer(
-    #     many=True,
-    #     write_only=True
-    # )
-
-    class Meta:
-        model = Recipe
-        fields = ('id',
-                  'title', 
-                  'image', 
-                  'image_url',
-                  'dish_components',
-                  'user',
-                  'category',
-                  'recipe_yield',
-                #   'category',
-                #   'ingredients',
-                #   'equipment',
-                #   'procedure',
                   )
 
 # class UserSerializer(serializers.ModelSerializer):
