@@ -117,18 +117,18 @@ class RecipeSerializer(serializers.ModelSerializer):
                   'procedure',
                   )
 class RecipeCreateSerializer(serializers.ModelSerializer):
-    ingredients = IngredientSerializer(
-        many=True,
-        write_only=True
-    )
-    equipment = EquipmentSerializer(
-        many=True,
-        write_only=True
-    )
-    procedure = ProcedureSerializer(
-        many=True,
-        write_only=True
-    )
+    # ingredients = IngredientSerializer(
+    #     many=True,
+    #     write_only=True
+    # )
+    # equipment = EquipmentSerializer(
+    #     many=True,
+    #     write_only=True
+    # )
+    # procedure = ProcedureSerializer(
+    #     many=True,
+    #     write_only=True
+    # )
 
     class Meta:
         model = Recipe
@@ -139,9 +139,11 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
                   'dish_components',
                   'user',
                   'category',
-                  'ingredients',
-                  'equipment',
-                  'procedure',
+                  'recipe_yield',
+                #   'category',
+                #   'ingredients',
+                #   'equipment',
+                #   'procedure',
                   )
 
 # class UserSerializer(serializers.ModelSerializer):

@@ -7,8 +7,8 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 # from rest_framework.permissions import IsAuthenticated
 # from rest_framework.filters import OrderingFilter
-from .serializers import RecipeSerializer, MyTokenObtainPairSerializer, CustomUserSerializer, RecipeCreateSerializer, User
-from .models import Recipe
+from .serializers import RecipeSerializer, MyTokenObtainPairSerializer, CustomUserSerializer, RecipeCreateSerializer, User, IngredientSerializer, EquipmentSerializer, ProcedureSerializer
+from .models import Recipe, Ingredient, Procedure, Equipment, Post, Comment
 
 # Recipe Views
 # class RecipeList(generics.ListCreateAPIView):
@@ -94,29 +94,29 @@ class HelloWorldView(APIView):
 # view user by id
  
 
-# # Ingredient Views
-# class IngredientList(generics.ListCreateAPIView):
-#     queryset = Ingredient.objects.all()
-#     serializer_class = IngredientSerializer
+# Ingredient Views
+class IngredientList(generics.ListCreateAPIView):
+    queryset = Ingredient.objects.all()
+    serializer_class = IngredientSerializer
 
-# class IngredientDetail(generics.RetrieveUpdateDestroyAPIView):
-#     queryset = Recipe.objects.all()
-#     serializer_class = RecipeSerializer
+class IngredientDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Ingredient.objects.all()
+    serializer_class = IngredientSerializer
 
-# # Procedure Views
-# class RecipeList(generics.ListCreateAPIView):
-#     queryset = Recipe.objects.all()
-#     serializer_class = RecipeSerializer
+# Procedure Views
+class ProcedureList(generics.ListCreateAPIView):
+    queryset = Procedure.objects.all()
+    serializer_class = ProcedureSerializer
 
-# class RecipeDetail(generics.RetrieveUpdateDestroyAPIView):
-#     queryset = Recipe.objects.all()
-#     serializer_class = RecipeSerializer
+class ProcedureDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Procedure.objects.all()
+    serializer_class = ProcedureSerializer
     
-# # Equipment Views
-# class RecipeList(generics.ListCreateAPIView):
-#     queryset = Recipe.objects.all()
-#     serializer_class = RecipeSerializer
+# Equipment Views
+class EquipmentList(generics.ListCreateAPIView):
+    queryset = Equipment.objects.all()
+    serializer_class = EquipmentSerializer
 
-# class RecipeDetail(generics.RetrieveUpdateDestroyAPIView):
-#     queryset = Recipe.objects.all()
-#     serializer_class = RecipeSerializer
+class EquipmentDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Equipment.objects.all()
+    serializer_class = EquipmentSerializer
