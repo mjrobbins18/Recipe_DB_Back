@@ -85,6 +85,7 @@ class CustomUserSerializer(serializers.ModelSerializer):
         self.check_object_permissions(self.request, obj)
         return obj
 class RecipeTitleCreateSerializer(serializers.ModelSerializer):
+    
     class Meta:
         model = Recipe
         fields = '__all__'
