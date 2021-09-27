@@ -7,8 +7,9 @@ from rest_framework_simplejwt import views as jwt_views
 
 urlpatterns = [
     path('recipes/view', views.RecipeList.as_view(), name='recipe_list'),
-    path('recipes/create', views.RecipeCreate.as_view(), name='recipe_list'),
+    path('recipes/create', views.RecipeTitleCreate.as_view(), name='recipe_list'),
     path('recipes/<int:pk>', views.RecipeDetail.as_view(), name='recipe_detail'),
+    path('recipes/body/create', views.RecipeBodyCreate.as_view(), name='recipe_body'),
     path('procedure/create', views.ProcedureList.as_view(), name='recipe_list'),
     path('equipment/create', views.EquipmentList.as_view(), name='recipe_list'),
     path('ingredient/create', views.IngredientList.as_view(), name='recipe_list'),

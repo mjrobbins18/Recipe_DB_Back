@@ -1,7 +1,10 @@
 from django.contrib import admin
-from .models import Recipe, Ingredient, Equipment, Procedure, User
+from .models import Recipe, Ingredient, Equipment, Procedure, User, RecipeBody
 
 # Register your models here.
+class BodyInline(admin.TabularInline):
+    model = RecipeBody
+
 class IngredientInline(admin.TabularInline):
     model = Ingredient
 
@@ -18,6 +21,7 @@ admin.site.register(User)
 
 @admin.register(Recipe)
 class RecipeAdmin(admin.ModelAdmin):
-    inlines = [IngredientInline, 
+    inlines = [BodyInline,
+               IngredientInline, 
                EquipmentInline, 
                ProcedureInline,  ]
