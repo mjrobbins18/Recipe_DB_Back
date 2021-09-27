@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 from .serializers import RecipeTitleCreateSerializer, MyTokenObtainPairSerializer, CustomUserSerializer, RecipeBodyCreateSerializer, RecipeViewSerializer, User, IngredientSerializer, EquipmentSerializer, ProcedureSerializer
-from .models import Recipe, Ingredient, Procedure, Equipment, Post, Comment
+from .models import Recipe, Ingredient, Procedure, Equipment, Post, Comment, RecipeBody
 
 # Delete, Update, Show, Recipe
 class RecipeDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -32,10 +32,14 @@ class RecipeTitleCreate(generics.ListCreateAPIView):
 
 #Create Recipe Body 
 class RecipeBodyCreate(generics.ListCreateAPIView):
-    queryset = Recipe.objects.all()
+    queryset = RecipeBody.objects.all()
     serializer_class = RecipeBodyCreateSerializer
     permission_classes = (permissions.AllowAny,)
     authentication_classes = ()
+
+    def form_valid(self, form):
+            form.instance.created_by = self.request.user
+            return super(Recipe, self).form_valid(form)
 
 
 class ObtainTokenPairWithNameView(TokenObtainPairView):
