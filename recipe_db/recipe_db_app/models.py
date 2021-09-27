@@ -9,9 +9,16 @@ class User(AbstractUser):
     first_name = models.CharField(blank=True, max_length=100)
     last_name = models.CharField(blank=True, max_length=100)
 
-# Recipe Model 
+# Recipe
 class Recipe(models.Model):
     title = models.CharField(max_length=100, unique=True)
+
+    def __str__(self):
+        return self.title
+
+# Recipe Model 
+class RecipeBody(models.Model):
+    title = models.ForeignKey(Recipe, to_field="title",on_delete=models.CASCADE, related_name='recipe_body', null=True)
     image = models.ImageField(upload_to='images', blank=True)
     image_url = models.URLField(blank= True)
     dish_components = models.CharField(max_length=500, blank=True)

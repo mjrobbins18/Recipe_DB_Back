@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from .models import Ingredient, Recipe, Equipment, Procedure, User, Favorites
+from .models import Ingredient, Recipe, Equipment, Procedure, User, Favorites, RecipeBody
 
 # Ingredient serializer
 class IngredientSerializer(serializers.ModelSerializer):
@@ -84,9 +84,26 @@ class CustomUserSerializer(serializers.ModelSerializer):
         obj = get_object_or_404(queryset, **filter)  # Lookup the object
         self.check_object_permissions(self.request, obj)
         return obj
+class RecipeTitleCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Recipe
+        fields = '__all__'
+
+class RecipeBodyCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RecipeBody
+        fields = ('id',
+                  'title', 
+                  'image', 
+                  'image_url',
+                  'dish_components',
+                  'user',
+                  'category',
+                  'recipe_yield',
+                  )
 
 # Recipe Serializer
-class RecipeSerializer(serializers.ModelSerializer):
+class RecipeViewSerializer(serializers.ModelSerializer):
     ingredients = IngredientSerializer(
         many=True,
         read_only=True
@@ -102,48 +119,19 @@ class RecipeSerializer(serializers.ModelSerializer):
     user = CustomUserSerializer(
         read_only=True
     )
-
+    recipe_body = RecipeBodyCreateSerializer(
+        read_only=True
+    )
     class Meta:
         model = Recipe
         fields = ('id',
-                  'title', 
-                  'image', 
-                  'image_url',
-                  'dish_components',
+                  'title',
+                  'recipe_body',
                   'user',
-                  'category',
+                
                   'ingredients',
                   'equipment',
                   'procedure',
-                  )
-class RecipeCreateSerializer(serializers.ModelSerializer):
-    # ingredients = IngredientSerializer(
-    #     many=True,
-    #     write_only=True
-    # )
-    # equipment = EquipmentSerializer(
-    #     many=True,
-    #     write_only=True
-    # )
-    # procedure = ProcedureSerializer(
-    #     many=True,
-    #     write_only=True
-    # )
-
-    class Meta:
-        model = Recipe
-        fields = ('id',
-                  'title', 
-                  'image', 
-                  'image_url',
-                  'dish_components',
-                  'user',
-                  'category',
-                  'recipe_yield',
-                #   'category',
-                #   'ingredients',
-                #   'equipment',
-                #   'procedure',
                   )
 
 # class UserSerializer(serializers.ModelSerializer):
