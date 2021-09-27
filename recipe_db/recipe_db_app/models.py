@@ -12,7 +12,7 @@ class User(AbstractUser):
 # Recipe
 class Recipe(models.Model):
     title = models.CharField(max_length=100, unique=True)
-    user = models.ForeignKey(User, to_field="username",on_delete=models.CASCADE, related_name='user_recipe', null=True)
+    # user = models.ForeignKey(User, to_field="username",on_delete=models.CASCADE, related_name='user_recipe', null=True)
 
     def __str__(self):
         return str(self.title)

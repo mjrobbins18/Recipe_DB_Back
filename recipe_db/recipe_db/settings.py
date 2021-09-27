@@ -114,6 +114,7 @@ WSGI_APPLICATION = 'recipe_db.wsgi.application'
 DATABASES = {
     'default': 
         dj_database_url.config(conn_max_age=600)
+    
 }
 
 # server path to store files in the computer
