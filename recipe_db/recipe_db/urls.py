@@ -25,7 +25,7 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('recipe_db_app.urls')),
+    path('api/', include('recipe_db_app.urls')),
     path('api-auth', include('rest_framework.urls', namespace='rest_framework')),
     # path('api/', include('recipe_db_app.routers', 'recipe_db_app' ), namespace='recipe-api')
 ]

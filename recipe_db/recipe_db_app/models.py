@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, AbstractUser, BaseUserManager, PermissionsMixin
+from django.utils import timezone
 
 # Models
 
@@ -10,11 +11,12 @@ class User(AbstractUser):
 
 # Recipe Model 
 class Recipe(models.Model):
-    title = models.CharField(max_length=100)
+    title = models.CharField(max_length=100, unique=True)
     image = models.ImageField(upload_to='images', blank=True)
     image_url = models.URLField(blank= True)
     dish_components = models.CharField(max_length=500, blank=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_recipe')
+    user = models.ForeignKey(User, to_field="username",on_delete=models.CASCADE, related_name='user_recipe', null=True)
+    recipe_yield = models.CharField(max_length=500, blank=True, null=True)
     BREAD = 'Bread'
     CANAPE = 'Canape'
     CHEESE = 'Cheese'
@@ -49,11 +51,16 @@ class Recipe(models.Model):
         (STOCK,'Stock'), 
     ]
     category = models.CharField(
-        max_length=14,
-        choices=CATEGORY_CHOICES,
+        max_length=100,
         blank=True,
+        choices= CATEGORY_CHOICES,
         default=None
     )
+    
+
+    def publish(self):
+        self.published_date = timezone.now()
+        self.save()
 
     def __str__(self):
         return self.title
@@ -63,7 +70,8 @@ class Ingredient(models.Model):
     unit_of_measure = models.CharField(max_length=100)
     name = models.CharField(max_length=200)
     recipe = models.ForeignKey(
-        Recipe, 
+        Recipe,
+        to_field='title', 
         on_delete=models.CASCADE, 
         related_name='ingredients')
 
@@ -75,6 +83,7 @@ class Equipment(models.Model):
     name = models.CharField(max_length=100)
     recipe = models.ForeignKey(
         Recipe,
+        to_field='title', 
         on_delete=models.CASCADE,
         related_name='equipment'
     )
@@ -85,6 +94,7 @@ class Procedure(models.Model):
     step = models.CharField(max_length=500)
     recipe = models.ForeignKey(
         Recipe,
+        to_field='title', 
         on_delete=models.CASCADE,
         related_name='procedure'
     )
@@ -93,7 +103,7 @@ class Procedure(models.Model):
     
 # Post and Comment Models
 class Post(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_post')
+    user = models.ForeignKey(User, to_field="username", on_delete=models.CASCADE, related_name='user_post')
     title = models.CharField(max_length=100)
     body = models.TextField()
 
@@ -101,15 +111,19 @@ class Post(models.Model):
         return self.title
 
 class Comment(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_comment')
+    user = models.ForeignKey(User, to_field="username", on_delete=models.CASCADE, related_name='user_comment')
     body = models.TextField()
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
 
     def __str__(self):
-        return self.author
+        return self.user
+
 
 # Favorite Recipes
 
 class Favorites(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_favorite')
+    user = models.ForeignKey(User, to_field="username", on_delete=models.CASCADE, related_name='user_favorite')
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='favorite_recipe')
+
+
+# Simpler Recipe Model

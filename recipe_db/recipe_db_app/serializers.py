@@ -62,16 +62,28 @@ class CustomUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('email', 'username', 'password', 'first_name', 'last_name')
+        fields = ('email', 'username', 'password', 'first_name', 'last_name', 'id')
         extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, validated_data):
         password = validated_data.pop('password', None)
-        instance = self.Meta.model(**validated_data)  # as long as the fields are the same, we can just use this
+        instance = self.Meta.model(**validated_data)
         if password is not None:
             instance.set_password(password)
         instance.save()
         return instance
+
+     # Allows to search by username 
+    def get_object(self):
+        queryset = self.get_queryset()             # Get the base queryset
+        queryset = self.filter_queryset(queryset)  # Apply any filter backends
+        filter = {}
+        for field in self.lookup_fields:
+            if self.kwargs[field]: # Ignore empty fields.
+                filter[field] = self.kwargs[field]
+        obj = get_object_or_404(queryset, **filter)  # Lookup the object
+        self.check_object_permissions(self.request, obj)
+        return obj
 
 # Recipe Serializer
 class RecipeSerializer(serializers.ModelSerializer):
@@ -103,6 +115,35 @@ class RecipeSerializer(serializers.ModelSerializer):
                   'ingredients',
                   'equipment',
                   'procedure',
+                  )
+class RecipeCreateSerializer(serializers.ModelSerializer):
+    # ingredients = IngredientSerializer(
+    #     many=True,
+    #     write_only=True
+    # )
+    # equipment = EquipmentSerializer(
+    #     many=True,
+    #     write_only=True
+    # )
+    # procedure = ProcedureSerializer(
+    #     many=True,
+    #     write_only=True
+    # )
+
+    class Meta:
+        model = Recipe
+        fields = ('id',
+                  'title', 
+                  'image', 
+                  'image_url',
+                  'dish_components',
+                  'user',
+                  'category',
+                  'recipe_yield',
+                #   'category',
+                #   'ingredients',
+                #   'equipment',
+                #   'procedure',
                   )
 
 # class UserSerializer(serializers.ModelSerializer):
