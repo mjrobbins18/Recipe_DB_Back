@@ -92,15 +92,7 @@ class RecipeTitleCreateSerializer(serializers.ModelSerializer):
 class RecipeBodyCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = RecipeBody
-        fields = ('id',
-                  'title', 
-                  'image', 
-                  'image_url',
-                  'dish_components',
-                  'user',
-                  'category',
-                  'recipe_yield',
-                  )
+        fields = ('__all__')
 
 # Recipe Serializer
 class RecipeViewSerializer(serializers.ModelSerializer):
@@ -120,6 +112,7 @@ class RecipeViewSerializer(serializers.ModelSerializer):
         read_only=True
     )
     recipe_body = RecipeBodyCreateSerializer(
+        many=True,
         read_only=True
     )
     class Meta:
@@ -128,7 +121,6 @@ class RecipeViewSerializer(serializers.ModelSerializer):
                   'title',
                   'recipe_body',
                   'user',
-                
                   'ingredients',
                   'equipment',
                   'procedure',

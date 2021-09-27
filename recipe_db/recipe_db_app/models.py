@@ -12,9 +12,10 @@ class User(AbstractUser):
 # Recipe
 class Recipe(models.Model):
     title = models.CharField(max_length=100, unique=True)
+    user = models.ForeignKey(User, to_field="username",on_delete=models.CASCADE, related_name='user_recipe', null=True)
 
     def __str__(self):
-        return self.title
+        return str(self.title)
 
 # Recipe Model 
 class RecipeBody(models.Model):
@@ -22,7 +23,6 @@ class RecipeBody(models.Model):
     image = models.ImageField(upload_to='images', blank=True)
     image_url = models.URLField(blank= True)
     dish_components = models.CharField(max_length=500, blank=True)
-    user = models.ForeignKey(User, to_field="username",on_delete=models.CASCADE, related_name='user_recipe', null=True)
     recipe_yield = models.CharField(max_length=500, blank=True, null=True)
     BREAD = 'Bread'
     CANAPE = 'Canape'
@@ -70,7 +70,7 @@ class RecipeBody(models.Model):
         self.save()
 
     def __str__(self):
-        return self.title
+        return str(self.title)
 
 class Ingredient(models.Model):
     quantity = models.FloatField()
@@ -83,7 +83,7 @@ class Ingredient(models.Model):
         related_name='ingredients')
 
     def __str__(self):
-        return self.name
+        return str(self.name)
 
 class Equipment(models.Model):
     quantity = models.IntegerField()
@@ -95,7 +95,7 @@ class Equipment(models.Model):
         related_name='equipment'
     )
     def __str__(self):
-        return self.name
+        return str(self.name)
 
 class Procedure(models.Model):
     step = models.CharField(max_length=500)
@@ -106,7 +106,7 @@ class Procedure(models.Model):
         related_name='procedure'
     )
     def __str__(self):
-        return self.step
+        return str(self.step)
     
 # Post and Comment Models
 class Post(models.Model):
@@ -115,7 +115,7 @@ class Post(models.Model):
     body = models.TextField()
 
     def __str__(self):
-        return self.title
+        return str(self.title)
 
 class Comment(models.Model):
     user = models.ForeignKey(User, to_field="username", on_delete=models.CASCADE, related_name='user_comment')
@@ -123,7 +123,7 @@ class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
 
     def __str__(self):
-        return self.user
+        return str(self.user)
 
 
 # Favorite Recipes
@@ -132,5 +132,7 @@ class Favorites(models.Model):
     user = models.ForeignKey(User, to_field="username", on_delete=models.CASCADE, related_name='user_favorite')
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='favorite_recipe')
 
+    def __str__(self):
+        return str(self.user)
 
 # Simpler Recipe Model
