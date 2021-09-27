@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from .models import Ingredient, Recipe, Equipment, Procedure, User, Favorites, RecipeBody
+from recipe_db_app import models
 
 # Ingredient serializer
 class IngredientSerializer(serializers.ModelSerializer):
@@ -32,6 +33,10 @@ class ProcedureSerializer(serializers.ModelSerializer):
                   'step',
                   'recipe',)
 
+class RecipeBodyCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RecipeBody
+        fields = ('__all__')
 
 # Favorite Serializer
 class FavoritesSerializer(serializers.ModelSerializer):
@@ -84,16 +89,14 @@ class CustomUserSerializer(serializers.ModelSerializer):
         obj = get_object_or_404(queryset, **filter)  # Lookup the object
         self.check_object_permissions(self.request, obj)
         return obj
+        
 class RecipeTitleCreateSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Recipe
         fields = '__all__'
 
-class RecipeBodyCreateSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = RecipeBody
-        fields = ('__all__')
+
 
 # Recipe Serializer
 class RecipeViewSerializer(serializers.ModelSerializer):
@@ -126,6 +129,17 @@ class RecipeViewSerializer(serializers.ModelSerializer):
                   'equipment',
                   'procedure',
                   )
+     # Allows to search by username 
+    def get_object(self):
+        queryset = self.get_queryset()             # Get the base queryset
+        queryset = self.filter_queryset(queryset)  # Apply any filter backends
+        filter = {}
+        for field in self.lookup_fields:
+            if self.kwargs[field]: # Ignore empty fields.
+                filter[field] = self.kwargs[field]
+        obj = get_object_or_404(queryset, **filter)  # Lookup the object
+        self.check_object_permissions(self.request, obj)
+        return obj
 
 # class UserSerializer(serializers.ModelSerializer):
 #     created = serializers.DateTimeField(read_only=True)

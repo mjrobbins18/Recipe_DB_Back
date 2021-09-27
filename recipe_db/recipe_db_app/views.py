@@ -18,6 +18,11 @@ class RecipeList(generics.ListCreateAPIView):
         serializer_class = RecipeViewSerializer
         permission_classes = (permissions.AllowAny,)
         authentication_classes = ()
+        
+# get recipes by username
+        def get_queryset(self):
+            user = self.kwargs['user']
+            return Recipe.objects.filter(user=user)
 
 # Create Recipe Title
 class RecipeTitleCreate(generics.ListCreateAPIView):
@@ -40,6 +45,7 @@ class RecipeBodyCreate(generics.ListCreateAPIView):
     def form_valid(self, form):
             form.instance.created_by = self.request.user
             return super(Recipe, self).form_valid(form)
+
 
 
 class ObtainTokenPairWithNameView(TokenObtainPairView):
