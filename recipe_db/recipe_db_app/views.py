@@ -4,6 +4,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
+from django.db.models import Q
 from .serializers import RecipeTitleCreateSerializer, MyTokenObtainPairSerializer, CustomUserSerializer, RecipeBodyCreateSerializer, RecipeViewSerializer, User, IngredientSerializer, EquipmentSerializer, ProcedureSerializer
 from .models import Recipe, Ingredient, Procedure, Equipment, Post, Comment, RecipeBody
 
@@ -12,17 +13,34 @@ class RecipeDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Recipe.objects.all()
     serializer_class = RecipeViewSerializer
 
-# List Recipe
 class RecipeList(generics.ListCreateAPIView):
         queryset = Recipe.objects.all()
         serializer_class = RecipeViewSerializer
         permission_classes = (permissions.AllowAny,)
+        authentication_classes = ()    
+
+# List Recipe
+class RecipeListByUser(generics.ListCreateAPIView):
+        queryset = Recipe.objects.all()
+        serializer_class = RecipeViewSerializer
+        permission_classes = (permissions.AllowAny,)
         authentication_classes = ()
-        
 # get recipes by username
         def get_queryset(self):
             user = self.kwargs['user']
             return Recipe.objects.filter(user=user)
+
+# recipe search
+class RecipeSearch(generics.ListCreateAPIView):
+    serializer_class = RecipeViewSerializer
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        object_list =  Recipe.objects.filter(Q(title__icontains=query))
+        return object_list
+
+
+
+# get recipes by search term
 
 # Create Recipe Title
 class RecipeTitleCreate(generics.ListCreateAPIView):
