@@ -13,19 +13,21 @@ class RecipeDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Recipe.objects.all()
     serializer_class = RecipeViewSerializer
 
+# List Recipe
 class RecipeList(generics.ListCreateAPIView):
-        queryset = Recipe.objects.all()
+        queryset = Recipe.objects.all()[:12]
         serializer_class = RecipeViewSerializer
         permission_classes = (permissions.AllowAny,)
         authentication_classes = ()    
 
-# List Recipe
+
+# get recipes by username
 class RecipeListByUser(generics.ListCreateAPIView):
         queryset = Recipe.objects.all()
         serializer_class = RecipeViewSerializer
         permission_classes = (permissions.AllowAny,)
         authentication_classes = ()
-# get recipes by username
+
         def get_queryset(self):
             user = self.kwargs['user']
             return Recipe.objects.filter(user=user)
@@ -35,7 +37,7 @@ class RecipeSearch(generics.ListCreateAPIView):
     serializer_class = RecipeViewSerializer
     def get_queryset(self):
         query = self.request.GET.get('q')
-        object_list =  Recipe.objects.filter(Q(title__icontains=query))
+        object_list =  Recipe.objects.filter(Q(title__icontains=query))[:10]
         return object_list
 
 
