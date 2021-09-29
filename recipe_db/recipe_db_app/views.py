@@ -1,9 +1,12 @@
 from django.shortcuts import render
 from rest_framework import generics, status, permissions
 from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.permissions import IsAuthenticated
 from django.db.models import Q
 from .serializers import RecipeTitleCreateSerializer, MyTokenObtainPairSerializer, CustomUserSerializer, RecipeBodyCreateSerializer, RecipeViewSerializer, User, IngredientSerializer, EquipmentSerializer, ProcedureSerializer
 from .models import Recipe, Ingredient, Procedure, Equipment, Post, Comment, RecipeBody
@@ -69,10 +72,12 @@ class RecipeBodyCreate(generics.ListCreateAPIView):
     serializer_class = RecipeBodyCreateSerializer
     permission_classes = (permissions.AllowAny,)
     authentication_classes = ()
+    parser_classes = [MultiPartParser, FormParser]
 
     def form_valid(self, form):
             form.instance.created_by = self.request.user
             return super(Recipe, self).form_valid(form)
+
 
 # Delete, Update, Show, Recipe Body
 class RecipeBodyDetail(generics.RetrieveUpdateDestroyAPIView):
