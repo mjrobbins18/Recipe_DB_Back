@@ -32,6 +32,17 @@ class RecipeListByUser(generics.ListCreateAPIView):
             user = self.kwargs['user']
             return Recipe.objects.filter(user=user)
 
+# get recipes by title
+class RecipeListByTitle(generics.ListCreateAPIView):
+        queryset = Recipe.objects.all()
+        serializer_class = RecipeViewSerializer
+        permission_classes = (permissions.AllowAny,)
+        authentication_classes = ()
+
+        def get_queryset(self):
+            title = self.kwargs['title']
+            return Recipe.objects.filter(title=title)
+
 # recipe search
 class RecipeSearch(generics.ListCreateAPIView):
     serializer_class = RecipeViewSerializer
@@ -40,9 +51,6 @@ class RecipeSearch(generics.ListCreateAPIView):
         object_list =  Recipe.objects.filter(Q(title__icontains=query))[:10]
         return object_list
 
-
-
-# get recipes by search term
 
 # Create Recipe Title
 class RecipeTitleCreate(generics.ListCreateAPIView):

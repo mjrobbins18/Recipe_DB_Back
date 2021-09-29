@@ -19,9 +19,9 @@ class Recipe(models.Model):
 
 # Recipe Model 
 class RecipeBody(models.Model):
-    title = models.ForeignKey(Recipe, to_field="title",on_delete=models.CASCADE, related_name='recipe_body', null=True)
+    title = models.ForeignKey(Recipe,on_delete=models.CASCADE, related_name='recipe_body', null=True)
     image = models.ImageField(upload_to='images', blank=True)
-    image_url = models.URLField(blank= True)
+    image_url = models.URLField(blank= True, max_length=500)
     dish_components = models.CharField(max_length=500, blank=True)
     recipe_yield = models.CharField(max_length=500, blank=True, null=True)
     BREAD = 'Bread'
@@ -78,7 +78,6 @@ class Ingredient(models.Model):
     name = models.CharField(max_length=200)
     recipe = models.ForeignKey(
         Recipe,
-        to_field='title', 
         on_delete=models.CASCADE, 
         related_name='ingredients')
 
@@ -89,8 +88,7 @@ class Equipment(models.Model):
     quantity = models.IntegerField()
     name = models.CharField(max_length=100)
     recipe = models.ForeignKey(
-        Recipe,
-        to_field='title', 
+        Recipe, 
         on_delete=models.CASCADE,
         related_name='equipment'
     )
@@ -101,7 +99,6 @@ class Procedure(models.Model):
     step = models.CharField(max_length=500)
     recipe = models.ForeignKey(
         Recipe,
-        to_field='title', 
         on_delete=models.CASCADE,
         related_name='procedure'
     )
