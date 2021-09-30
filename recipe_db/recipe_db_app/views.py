@@ -72,11 +72,10 @@ class RecipeBodyCreate(generics.ListCreateAPIView):
     serializer_class = RecipeBodyCreateSerializer
     permission_classes = (permissions.AllowAny,)
     authentication_classes = ()
-    parser_classes = [MultiPartParser, FormParser]
 
     def form_valid(self, form):
             form.instance.created_by = self.request.user
-            return super(Recipe, self).form_valid(form)
+            return super(RecipeBody, self).form_valid(form)
 
 
 # Delete, Update, Show, Recipe Body
@@ -88,7 +87,7 @@ class RecipeBodyDetail(generics.RetrieveUpdateDestroyAPIView):
 
     def form_valid(self, form):
             form.instance.created_by = self.request.user
-            return super(Recipe, self).form_valid(form)
+            return super(RecipeBody, self).form_valid(form)
 
 class ObtainTokenPairWithNameView(TokenObtainPairView):
     permission_classes = (permissions.AllowAny,)
