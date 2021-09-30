@@ -1,3 +1,4 @@
+from enum import unique
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from .models import Ingredient, Recipe, Equipment, Procedure, User, Favorites, RecipeBody
@@ -62,7 +63,7 @@ class CustomUserSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(
         required=True
     )
-    username = serializers.CharField()
+    username = serializers.CharField(error_messages={})
     password = serializers.CharField(min_length=8, write_only=True)
 
     class Meta:

@@ -21,8 +21,8 @@ class Recipe(models.Model):
 class RecipeBody(models.Model):
     title = models.ForeignKey(Recipe,on_delete=models.CASCADE, related_name='recipe_body', null=True)
     image = models.ImageField(upload_to='images', blank=True)
-    image_url = models.URLField(blank= True, max_length=500)
-    dish_components = models.CharField(max_length=500, blank=True)
+    image_url = models.URLField(blank= True, max_length=500, default='https://drive.google.com/uc?export=view&id=1m1fHXCN-JA_4nNLdH5eeqStS-gAoFWNU')
+    dish_components = models.CharField(max_length=500, blank=True, default='')
     recipe_yield = models.CharField(max_length=500, blank=True, null=True)
     BREAD = 'Bread'
     CANAPE = 'Canape'
