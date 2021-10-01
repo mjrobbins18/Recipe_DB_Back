@@ -1,6 +1,7 @@
 from django.urls import path
+from django.conf.urls import url
 from . import views
-from .views import ObtainTokenPairWithNameView, CustomUserCreate, LogoutAndBlacklistRefreshTokenForUserView
+from .views import ObtainTokenPairWithNameView, CustomUserCreate, LogoutAndBlacklistRefreshTokenForUserView, index
 from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt import views as jwt_views
 
@@ -29,6 +30,8 @@ urlpatterns = [
     path('user/create/', CustomUserCreate.as_view(), name="create_user"),
     path('token/obtain/', ObtainTokenPairWithNameView.as_view(), name='token_create'),
     path('token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
-    path('blacklist/', LogoutAndBlacklistRefreshTokenForUserView.as_view(), name = 'blacklist'),
+    path('blacklist/', LogoutAndBlacklistRefreshTokenForUserView.as_view(), name='blacklist'),
+    path('', views.index, name='index'),
+    path('<str:room_name>/', views.room, name='room'),
    
 ]

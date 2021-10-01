@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.conf import settings
-from django.conf.urls import include
+from django.conf.urls import include, url
 from django.conf.urls.static import static
 
 
@@ -27,6 +27,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('recipe_db_app.urls')),
     path('api-auth', include('rest_framework.urls', namespace='rest_framework')),
+    path('chat/', include('recipe_db_app.urls')),
 ]
 
 if settings.DEBUG:
