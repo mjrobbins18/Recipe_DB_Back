@@ -110,6 +110,8 @@ class Post(models.Model):
     user = models.ForeignKey(User, to_field="username", on_delete=models.CASCADE, related_name='user_post')
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='recipe_post')
     body = models.TextField()
+    created_date = models.DateField(auto_now_add=True)
+    created_time = models.TimeField(auto_now_add=True)
 
     def __str__(self):
         return str(self.body)
@@ -118,6 +120,8 @@ class Comment(models.Model):
     user = models.ForeignKey(User, to_field="username", on_delete=models.CASCADE, related_name='user_comment')
     body = models.TextField()
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
+    created_date = models.DateField(auto_now_add=True)
+    created_time = models.TimeField(auto_now_add=True)
 
     def __str__(self):
         return str(self.user)

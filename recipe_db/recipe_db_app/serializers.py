@@ -160,8 +160,11 @@ class PostSerializer(serializers.ModelSerializer):
         fields = ('user',
                   'recipe',
                   'body',
+                  'id',
+                  'created_date',
+                  'created_time',
                   'comments',
-                  'id',)
+                  )
 
     # def get_object(self):
     #     queryset = self.get_queryset()             # Get the base queryset

@@ -166,15 +166,27 @@ class EquipmentDetail(generics.RetrieveUpdateDestroyAPIView):
 class CommentList(generics.ListCreateAPIView):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
+    permission_classes = (permissions.AllowAny,)
+    authentication_classes = ()
 
 class CommentDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
+    permission_classes = (permissions.AllowAny,)
+    authentication_classes = ()
 
 # Post Views
 class PostList(generics.ListCreateAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
+    permission_classes = (permissions.AllowAny,)
+    authentication_classes = ()
+
+class PostListByRecipe(generics.ListCreateAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+    permission_classes = (permissions.AllowAny,)
+    authentication_classes = ()
 
 # Get posts by recipe
     def get_queryset(self):
@@ -185,6 +197,8 @@ class PostList(generics.ListCreateAPIView):
 class PostDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
+    permission_classes = (permissions.AllowAny,)
+    authentication_classes = ()
 
     
 
