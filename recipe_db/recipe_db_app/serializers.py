@@ -1,7 +1,7 @@
 from enum import unique
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from .models import Ingredient, Recipe, Equipment, Procedure, User, Favorites, RecipeBody
+from .models import Ingredient, Recipe, Equipment, Procedure, User, Favorites, RecipeBody, Comment, Post
 from recipe_db_app import models
 
 # Ingredient serializer
@@ -142,19 +142,34 @@ class RecipeViewSerializer(serializers.ModelSerializer):
         self.check_object_permissions(self.request, obj)
         return obj
 
-# class UserSerializer(serializers.ModelSerializer):
-#     created = serializers.DateTimeField(read_only=True)
-#     updated = serializers.DateTimeField(read_only=True)
-#     recipe = RecipeSerializer(
-#         many=True,
-#         read_only=True
-#     )
-#     favorites = FavoritesSerializer(
-#         many=True,
-#         read_only=True
-#     )
+# Comment Serializer
+class CommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = '__all__'
 
-#     class Meta:
-#         model = User
-#         fields = ['id', 'username', 'email', 'is_active', 'created', 'updated', 'recipe', 'favorites']
-#         read_only_field = ['is_active']
+# Post Serializer
+class PostSerializer(serializers.ModelSerializer):
+    comments = CommentSerializer(
+        many=True,
+        read_only=True
+    )
+   
+    class Meta:
+        model = Post
+        fields = ('user',
+                  'recipe',
+                  'body',
+                  'comments',
+                  'id',)
+
+    # def get_object(self):
+    #     queryset = self.get_queryset()             # Get the base queryset
+    #     queryset = self.filter_queryset(queryset)  # Apply any filter backends
+    #     filter = {}
+    #     for field in self.lookup_fields:
+    #         if self.kwargs[field]: # Ignore empty fields.
+    #             filter[field] = self.kwargs[field]
+    #     obj = get_object_or_404(queryset, **filter)  # Lookup the object
+    #     self.check_object_permissions(self.request, obj)
+    #     return obj

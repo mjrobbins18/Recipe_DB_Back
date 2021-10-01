@@ -108,11 +108,11 @@ class Procedure(models.Model):
 # Post and Comment Models
 class Post(models.Model):
     user = models.ForeignKey(User, to_field="username", on_delete=models.CASCADE, related_name='user_post')
-    title = models.CharField(max_length=100)
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='recipe_post')
     body = models.TextField()
 
     def __str__(self):
-        return str(self.title)
+        return str(self.body)
 
 class Comment(models.Model):
     user = models.ForeignKey(User, to_field="username", on_delete=models.CASCADE, related_name='user_comment')
