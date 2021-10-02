@@ -15,6 +15,8 @@ from .models import Recipe, Ingredient, Procedure, Equipment, Post, Comment, Rec
 class RecipeDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Recipe.objects.all()
     serializer_class = RecipeViewSerializer
+    permission_classes = (permissions.AllowAny,)
+    authentication_classes = ()    
 
 # List Recipe
 class RecipeList(generics.ListCreateAPIView):
@@ -139,28 +141,40 @@ class UserDetail(generics.RetrieveUpdateDestroyAPIView):
 class IngredientList(generics.ListCreateAPIView):
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
+    serializer_class = CustomUserSerializer
+    permission_classes = (permissions.AllowAny,)
 
 class IngredientDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
+    serializer_class = CustomUserSerializer
+    permission_classes = (permissions.AllowAny,)
 
 # Procedure Views
 class ProcedureList(generics.ListCreateAPIView):
     queryset = Procedure.objects.all()
     serializer_class = ProcedureSerializer
+    serializer_class = CustomUserSerializer
+    permission_classes = (permissions.AllowAny,)
 
 class ProcedureDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Procedure.objects.all()
     serializer_class = ProcedureSerializer
+    serializer_class = CustomUserSerializer
+    permission_classes = (permissions.AllowAny,)
     
 # Equipment Views
 class EquipmentList(generics.ListCreateAPIView):
     queryset = Equipment.objects.all()
     serializer_class = EquipmentSerializer
+    serializer_class = CustomUserSerializer
+    permission_classes = (permissions.AllowAny,)
 
 class EquipmentDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Equipment.objects.all()
     serializer_class = EquipmentSerializer
+    serializer_class = CustomUserSerializer
+    permission_classes = (permissions.AllowAny,)
 
 # Comment Views
 class CommentList(generics.ListCreateAPIView):
@@ -201,6 +215,8 @@ class PostDetail(generics.RetrieveUpdateDestroyAPIView):
     authentication_classes = ()
 
 
+
+# Chat room test
 def index(request):
     return render(request, 'example/index.html')
 
