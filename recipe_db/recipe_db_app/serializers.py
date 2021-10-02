@@ -113,9 +113,7 @@ class RecipeViewSerializer(serializers.ModelSerializer):
         many=True,
         read_only=True
     )
-    user = CustomUserSerializer(
-        read_only=True
-    )
+ 
     recipe_body = RecipeBodyCreateSerializer(
         many=True,
         read_only=True
