@@ -33,7 +33,29 @@ class ProcedureSerializer(serializers.ModelSerializer):
         fields = ('id',
                   'step',
                   'recipe',)
+# Comment Serializer
+class CommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = '__all__'
 
+# Post Serializer
+class PostSerializer(serializers.ModelSerializer):
+    comments = CommentSerializer(
+        many=True,
+        read_only=True
+    )
+   
+    class Meta:
+        model = Post
+        fields = ('user',
+                  'recipe',
+                  'body',
+                  'id',
+                  'created_date',
+                  'created_time',
+                  'comments',
+                  )
 class RecipeBodyCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = RecipeBody
@@ -118,6 +140,10 @@ class RecipeViewSerializer(serializers.ModelSerializer):
         many=True,
         read_only=True
     )
+    post = PostSerializer(
+        many=True,
+        read_only=True
+    )
     class Meta:
         model = Recipe
         fields = ('id',
@@ -127,7 +153,9 @@ class RecipeViewSerializer(serializers.ModelSerializer):
                   'ingredients',
                   'equipment',
                   'procedure',
+                  'post',
                   )
+
      # Allows to search by username 
     def get_object(self):
         queryset = self.get_queryset()             # Get the base queryset
@@ -140,29 +168,7 @@ class RecipeViewSerializer(serializers.ModelSerializer):
         self.check_object_permissions(self.request, obj)
         return obj
 
-# Comment Serializer
-class CommentSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Comment
-        fields = '__all__'
 
-# Post Serializer
-class PostSerializer(serializers.ModelSerializer):
-    comments = CommentSerializer(
-        many=True,
-        read_only=True
-    )
-   
-    class Meta:
-        model = Post
-        fields = ('user',
-                  'recipe',
-                  'body',
-                  'id',
-                  'created_date',
-                  'created_time',
-                  'comments',
-                  )
 
     # def get_object(self):
     #     queryset = self.get_queryset()             # Get the base queryset
