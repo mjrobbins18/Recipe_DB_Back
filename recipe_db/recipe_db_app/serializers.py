@@ -56,6 +56,7 @@ class PostSerializer(serializers.ModelSerializer):
                   'created_time',
                   'comments',
                   )
+
 class RecipeBodyCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = RecipeBody
@@ -140,20 +141,21 @@ class RecipeViewSerializer(serializers.ModelSerializer):
         many=True,
         read_only=True
     )
-    post = PostSerializer(
+    recipe_post= PostSerializer(
         many=True,
         read_only=True
+    
     )
     class Meta:
         model = Recipe
         fields = ('id',
                   'title',
+                  'recipe_post',
                   'recipe_body',
                   'user',
                   'ingredients',
                   'equipment',
                   'procedure',
-                  'post',
                   )
 
      # Allows to search by username 
